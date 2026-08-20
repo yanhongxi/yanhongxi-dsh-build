@@ -1,7 +1,7 @@
 name: Build deepseek-harness
 
 on:
-  workflow_dispatch: # 手动按钮触发
+  workflow_dispatch:
 
 jobs:
   build:
@@ -17,13 +17,12 @@ jobs:
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ shturl.cc/ZQ }}
+          username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Prepare build context, clone upstream deepseek-harness
         run: |
           git clone https://github.com/deepseek-ai/deepseek-harness.git ./src
-          # 创建docker补丁，监听0.0.0.0
           cat > ./docker-patch.yml <<'EOF'
           - id: webserver
             config:
