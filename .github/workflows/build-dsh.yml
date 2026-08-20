@@ -23,7 +23,8 @@ jobs:
       - name: Prepare build context, clone upstream deepseek-harness
         run: |
           git clone https://github.com/deepseek-ai/deepseek-harness.git ./src
-          cat > ./docker-patch.yml <<'EOF'
+          # ✅直接在src目录内部生成补丁文件，放到构建上下文内
+          cat > ./src/docker-patch.yml <<'EOF'
           - id: webserver
             config:
               host: '0.0.0.0'
@@ -34,7 +35,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: ./src
-          file: ./Dockerfile
+          file: ./src/Dockerfile
           push: true
           platforms: linux/amd64,linux/arm64
           tags: |
